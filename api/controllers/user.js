@@ -27,6 +27,18 @@ const create = (req, res = response) => {
     });
 }
 
+const getAll = async(req, res = response) =>{
+
+    const users = await User.find().exec();
+
+    res.json({
+        status:true,
+        users:users
+    });
+
+}
+
 module.exports = {
-    create
+    create,
+    getAll
 }
