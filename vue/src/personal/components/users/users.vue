@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-light min-vh-100 d-flex flex-row">
-    <CContainer>
+  <div align=''>
+
       <CRow class="">
         <CCol>
           <CCard class="position-relative">
@@ -10,7 +10,7 @@
               <hr>
               <CRow>
                 <CCol class=" d-flex flex-row-reverse">
-                  <CButton color="primary">Create user</CButton>
+                  <CButton color="primary" @click="createUser">Create user</CButton>
                 </CCol>
               </CRow>
 
@@ -47,27 +47,40 @@
               </div>
             </CCardBody>  
           </CCard>
+
+          <UsersCreate  v-bind:show="showCreate"  @closeModal="closeModal" />
+
         </CCol>
       </CRow>
-    </CContainer>
   </div>
 </template>
 
 <script>
 
 import { mapState } from 'vuex'
+import UsersCreate from './create.vue';
 
 export default {
   name: 'Users',
   data(){
     return { 
-
+      showCreate:false
     }
+  },
+  components:{
+    UsersCreate
   },
   mounted(){
     this.$store.dispatch('user/getAll');
   },
   methods:{
+    createUser(){
+      this.showCreate = true;
+    },
+    closeModal(){
+      this.showCreate = false;
+    }
+     
   },
   computed:{
     ...mapState('user',{
@@ -82,3 +95,26 @@ export default {
   }
 }
 </script>
+
+<style>
+  .slide-fade-enter-active {
+    transition: all .3s ease;
+    z-index:1;
+  }
+
+  .slide-fade-leave-active {
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    z-index: 1;
+  }
+
+  .slide-fade-enter, .slide-fade-leave-to{
+    transform: translateX(300px);
+    opacity: 0;
+    z-index: 1;
+  }
+
+  .page-item.active .page-link{
+    z-index: 0;
+  }
+
+</style>
