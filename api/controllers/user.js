@@ -7,6 +7,7 @@ const create = (req, res = response) => {
 
     const { name, last_name, email } = req.body;
 
+
     var role = '620709a464817cd487a2b454';
     var password = 'abc123';
 

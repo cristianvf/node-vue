@@ -98,7 +98,7 @@ export default {
           this.$emit('close');
       },
       saveUser(){
-        
+
         if(!this.v$.$invalid){
           var data = {'name':this.user.name, 'last_name':this.user.last_name,'email':this.user.email};
           this.$store.dispatch('user/createUser', data);
