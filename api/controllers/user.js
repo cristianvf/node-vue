@@ -5,7 +5,11 @@ const bcryptjs = require('bcryptjs');
 
 const create = (req, res = response) => {
 
-    const { name, last_name, email, password, role } = req.body;
+    const { name, last_name, email } = req.body;
+
+    var role = '620709a464817cd487a2b454';
+    var password = 'abc123';
+
     const user = new User({name, last_name, email, password});
     
     //encrypt password

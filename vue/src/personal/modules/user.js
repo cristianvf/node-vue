@@ -6,6 +6,7 @@ export const user = {
     state:{
         users:[],
         loadStatusLogin:0,
+        loadStatusCreate:0,
 
     },
     actions:{
@@ -13,12 +14,21 @@ export const user = {
             commit('setLoadStatusLogin',1);
             userAPI.getAll(params)
             .then(function( response ){
-                console.log(response.data)
                 commit('setUsers',response.data.users)
                 commit('setLoadStatusLogin',2);
             })
             .catch(function(err){
                 commit('setLoadStatusLogin',3);
+            })
+        },
+        createUser( {commit}, params ){
+            commit('setLoadStatusCreate',1);
+            userAPI.createUser(params)
+            .then(function( response ){
+                commit('setLoadStatusCreate',2);
+            })
+            .catch(function(err){
+                commit('setLoadStatusCreate',3);
             })
         }
     },
@@ -29,12 +39,18 @@ export const user = {
         setUsers( state, value ){
             state.users = value;
         },
+        setLoadStatusCreate( state, value ){
+            state.loadStatusCreate = value;
+        }
         
     
     },
     getters:{
         getUsers( state ){
             return state.users;
+        },
+        getLoadStatusCreate( state ){
+            return state.loadStatusCreate;
         }
     }
 }

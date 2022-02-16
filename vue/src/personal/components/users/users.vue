@@ -48,7 +48,7 @@
             </CCardBody>  
           </CCard>
 
-          <UsersCreate  v-bind:show="showCreate"  @closeModal="closeModal" />
+          <UsersCreate  v-bind:show="showCreate"  v-on:closeModal="closeModal" />
 
         </CCol>
       </CRow>
@@ -85,13 +85,19 @@ export default {
   computed:{
     ...mapState('user',{
       loadStatusLogin: state => state.loadStatusLogin,
-      users: state => state.users
+      users: state => state.users,
+      loadStatusCreate: state => state.loadStatusCreate
     })
 
 
   },
   watch:{
-
+    loadStatusCreate(val){
+      if (val == 2 || val == 3) {
+        this.$store.dispatch('user/getAll');
+        this.showCreate = false;
+      }
+    }
   }
 }
 </script>

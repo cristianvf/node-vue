@@ -3,5 +3,8 @@ import axios from '../../helpers/interceptors';
 export default {
     getAll: function(params){
         return axios.get('/api/user/getAll',{})
+    },
+    createUser: function (params){
+        return axios.post('/api/user/create',params);
     }
 }
