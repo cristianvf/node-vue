@@ -15,21 +15,30 @@
             <CRow class="mb-3">
                 <CFormLabel class="col-sm-2 col-form-label">Name</CFormLabel>
                 <div class="col-sm-10">
-                    <CFormInput  v-model="user.name" :value.sync="user.name" />
+                    <CFormInput  v-model="v$.user.name.$model" v-bind:invalid="validateField('name')" v-bind:valid="!validateField('name')"/>
+                    <CFormFeedback invalid>
+                      The name is required
+                    </CFormFeedback>
                 </div>
             </CRow>
 
             <CRow class="mb-3">
                 <CFormLabel class="col-sm-2 col-form-label">Last name</CFormLabel>
                 <div class="col-sm-10">
-                    <CFormInput  v-model="user.last_name" :value.sync="user.last_name" />
+                    <CFormInput  v-model="v$.user.last_name.$model" v-bind:invalid="validateField('last_name')" v-bind:valid="!validateField('last_name')"/>
+                    <CFormFeedback invalid>
+                      The last name is required
+                    </CFormFeedback>
                 </div>
             </CRow>
 
             <CRow class="mb-3">
                 <CFormLabel class="col-sm-2 col-form-label">Email</CFormLabel>
                 <div class="col-sm-10">
-                    <CFormInput  v-model="user.email" :value.sync="user.email" />
+                    <CFormInput  v-model="v$.user.email.$model" v-bind:invalid="validateField('email')" v-bind:valid="!validateField('email')" />
+                    <CFormFeedback invalid>
+                      The email is required and must be an email.
+                    </CFormFeedback>
                 </div>
             </CRow>
         </div>
@@ -48,6 +57,8 @@
 <script>
 
 import { mapState } from 'vuex'
+import useVuelidate from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
 
 export default {
   name: 'UsersCreate',
@@ -56,6 +67,11 @@ export default {
           type:Boolean,
           default:false
       }
+  },
+  setup(){
+    return {
+      v$: useVuelidate()
+    }
   },
   data(){
     return { 
@@ -66,18 +82,33 @@ export default {
         }
     }
   },
+  validations(){
+    return {
+      user: {
+        name:{ required },
+        last_name:{ required },
+        email: { required, email }
+      }
+    }
+  },
   mounted(){
   },
   methods:{
       closemodal(){
-          console.log("entro");
-
           this.$emit('close');
       },
       saveUser(){
-        var data = {'name':this.user.name, 'last_name':this.user.last_name,'email':this.user.email};
-        this.$store.dispatch('user/createUser', data);
+        
+        if(!this.v$.$invalid){
+          var data = {'name':this.user.name, 'last_name':this.user.last_name,'email':this.user.email};
+          this.$store.dispatch('user/createUser', data);
+        }
 
+        
+
+      },
+      validateField(field){
+        return this.v$.user[field].$invalid;
       }
   },
   computed:{
