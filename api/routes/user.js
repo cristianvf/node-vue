@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { create, getAll } = require('../controllers/user');
+const { create, getAll, get } = require('../controllers/user');
 const { validations } = require('../middlewares/validations');
 
 const router = new Router();
@@ -14,5 +14,10 @@ router.post('/create',[
 ] ,create);
 
 router.get('/getAll', getAll);
+
+router.get('/get',[
+    check('id', 'The id is required').not().isEmpty(),
+    validations
+], get);
 
 module.exports = router;

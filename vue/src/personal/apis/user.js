@@ -6,5 +6,9 @@ export default {
     },
     createUser: function (params){
         return axios.post('/api/user/create',params);
-    }
+    },
+    getUser: function (params){
+        return axios.get('/api/user/get',{params : params } );
+    },
+
 }

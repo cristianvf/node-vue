@@ -7,6 +7,8 @@ export const user = {
         users:[],
         loadStatusLogin:0,
         loadStatusCreate:0,
+        loadStatusInfo:0,
+        info:{}
 
     },
     actions:{
@@ -30,6 +32,18 @@ export const user = {
             .catch(function(err){
                 commit('setLoadStatusCreate',3);
             })
+        },
+        getUser( {commit}, params ){
+            commit('setLoadStatusInfo',1);
+            userAPI.getUser(params)
+            .then(function( response ){
+                commit('setInfo',response.data.user);
+                commit('setLoadStatusInfo',2);
+            })
+            .catch(function(err){
+                commit('setLoadStatusInfo',3);
+            })
+
         }
     },
     mutations:{
@@ -41,6 +55,12 @@ export const user = {
         },
         setLoadStatusCreate( state, value ){
             state.loadStatusCreate = value;
+        },
+        setLoadStatusInfo( state, value ){
+            state.loadStatusInfo = value;
+        },
+        setInfo( state, value ){
+            state.info = value;
         }
         
     
@@ -51,6 +71,12 @@ export const user = {
         },
         getLoadStatusCreate( state ){
             return state.loadStatusCreate;
+        },
+        getLoadStatusInfo( state ){
+            return state.loadStatusInfo;
+        },
+        getInfo( state ){
+            return state.info;
         }
     }
 }

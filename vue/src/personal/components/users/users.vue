@@ -38,7 +38,10 @@
                           <CTableHeaderCell scope="row">{{user._id}}</CTableHeaderCell>
                           <CTableDataCell>{{user.name}} {{user.last_name}} </CTableDataCell>
                           <CTableDataCell>{{user.email}}</CTableDataCell>
-                          <CTableDataCell>{{user._id}}</CTableDataCell>
+                          <CTableDataCell>
+                            <CButton color="info" size="sm" class="me-2" ><CIcon :icon="icon.cilPencil"/></CButton>
+                            <CButton color="light" size="sm" @click="infoUser(user._id)"><CIcon :icon="icon.cilInfo"/></CButton>
+                          </CTableDataCell>
                         </CTableRow>
                       </CTableBody>
                     </CTable>
@@ -49,6 +52,7 @@
           </CCard>
 
           <UsersCreate  v-bind:show="showCreate"  v-on:closeModal="closeModal" />
+          <UserInfo v-bind:show="showInfo" v-on:closeModal="closeInfo" v-bind:id="id"  />
 
         </CCol>
       </CRow>
@@ -57,18 +61,30 @@
 
 <script>
 
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 import UsersCreate from './create.vue';
+import UserInfo from './info.vue';
+import { CIcon } from '@coreui/icons-vue';
+import * as icon from '@coreui/icons';
 
 export default {
   name: 'Users',
+  setup(){
+    return{
+      icon
+    }
+  },
   data(){
     return { 
-      showCreate:false
+      showCreate:false,
+      showInfo:false,
+      id: ''
     }
   },
   components:{
-    UsersCreate
+    UsersCreate,
+    UserInfo,
+    CIcon
   },
   mounted(){
     this.$store.dispatch('user/getAll');
@@ -79,6 +95,13 @@ export default {
     },
     closeModal(){
       this.showCreate = false;
+    },
+    infoUser(id){
+      this.id = id
+      this.showInfo = true;
+    },
+    closeInfo(){
+      this.showInfo = false;
     }
      
   },

@@ -43,7 +43,20 @@ const getAll = async(req, res = response) =>{
 
 }
 
+const get = async(req, res = response) => {
+
+    const { id } = req.query;
+
+    const user = await User.findById(id).exec();
+
+    res.json({
+        status:true,
+        user
+    });
+}
+
 module.exports = {
     create,
-    getAll
+    getAll,
+    get
 }
