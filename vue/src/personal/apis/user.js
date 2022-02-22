@@ -2,7 +2,7 @@ import axios from '../../helpers/interceptors';
 
 export default {
     getAll: function(params){
-        return axios.get('/api/user/getAll',{})
+        return axios.get('/api/user/getAll',{params:params})
     },
     createUser: function (params){
         return axios.post('/api/user/create',params);

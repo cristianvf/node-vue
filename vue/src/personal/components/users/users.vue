@@ -47,6 +47,15 @@
                     </CTable>
                   </CCol>
                 </CRow>
+                <CRow v-if="count/limit > 1">
+                  <CCol>
+                    <CPagination aria-label="Page navigation example" align="center">
+                      <CPaginationItem aria-label="Previous" @click="changePage(1)" :disabled="activePage == 1"><span aria-hidden="true">&laquo;</span></CPaginationItem>
+                      <CPaginationItem v-for="i in Math.ceil(count/limit)" :key="i" :active="activePage == i" @click="changePage(i)" >{{i}}</CPaginationItem>
+                      <CPaginationItem aria-label="Next" @click="changePage(Math.ceil(count/limit))" :disabled="activePage == Math.ceil(count/limit)" ><span aria-hidden="true" >&raquo;</span></CPaginationItem>
+                    </CPagination>
+                  </CCol>
+                </CRow>
               </div>
             </CCardBody>  
           </CCard>
@@ -81,7 +90,10 @@ export default {
       showCreate:false,
       showInfo:false,
       showEdit:false,
-      id: ''
+      id: '',
+      limit:5,
+      start:0,
+      activePage:1
     }
   },
   components:{
@@ -91,7 +103,7 @@ export default {
     CIcon
   },
   mounted(){
-    this.$store.dispatch('user/getAll');
+    this.$store.dispatch('user/getAll',{ 'limit':this.limit, 'start': this.start });
   },
   methods:{
     createUser(){
@@ -113,6 +125,12 @@ export default {
     },
     closeEdit(){
       this.showEdit = false
+    },
+    changePage(i){
+      this.activePage = i;
+      console.log("start")
+      this.start = this.limit * (this.activePage - 1)
+      this.$store.dispatch('user/getAll',{ 'limit':this.limit, 'start': this.start });
     }
      
   },
@@ -121,7 +139,8 @@ export default {
       loadStatusLogin: state => state.loadStatusLogin,
       users: state => state.users,
       loadStatusCreate: state => state.loadStatusCreate,
-      loadStatusEdit: state => state.loadStatusEdit
+      loadStatusEdit: state => state.loadStatusEdit,
+      count: state => state.count
     })
 
 
@@ -129,13 +148,13 @@ export default {
   watch:{
     loadStatusCreate(val){
       if (val == 2 || val == 3) {
-        this.$store.dispatch('user/getAll');
+        this.$store.dispatch('user/getAll',{ 'limit':this.limit, 'start': this.start });
         this.showCreate = false;
       }
     },
     loadStatusEdit(val){
       if (val == 2 || val == 3) {
-        this.$store.dispatch('user/getAll');
+        this.$store.dispatch('user/getAll',{ 'limit':this.limit, 'start': this.start });
         this.showEdit = false;
       }
     }

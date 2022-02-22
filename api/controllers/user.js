@@ -34,11 +34,20 @@ const create = (req, res = response) => {
 
 const getAll = async(req, res = response) =>{
 
-    const users = await User.find().exec();
+    const {limit = 5, start = 0} = req.query;
+    const query = { status:1 };
+
+    const [count, users] = await Promise.all([
+        User.countDocuments(query), 
+        User.find().skip(Number(start)).limit(Number(limit))
+
+    ])
+    //const users = await User.find().exec();
 
     res.json({
         status:true,
-        users:users
+        users,
+        count
     });
 
 }

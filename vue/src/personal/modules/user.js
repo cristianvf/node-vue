@@ -9,7 +9,8 @@ export const user = {
         loadStatusCreate:0,
         loadStatusInfo:0,
         loadStatusEdit:0,
-        info:{}
+        info:{},
+        count:0,
 
     },
     actions:{
@@ -18,6 +19,7 @@ export const user = {
             userAPI.getAll(params)
             .then(function( response ){
                 commit('setUsers',response.data.users)
+                commit('setCount',response.data.count);
                 commit('setLoadStatusLogin',2);
             })
             .catch(function(err){
@@ -74,6 +76,9 @@ export const user = {
         },
         setLoadStatusEdit( state, value ){
             state.loadStatusEdit = value;
+        },
+        setCount( state, value){
+            state.count = value;
         }
         
     
@@ -93,6 +98,9 @@ export const user = {
         },
         getLoadStatusEdit( state ){
             return state.loadStatusEdit;
+        },
+        getCount( state ){
+            return state.count;
         }
     }
 }
