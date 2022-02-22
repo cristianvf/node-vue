@@ -55,8 +55,22 @@ const get = async(req, res = response) => {
     });
 }
 
+const update = async(req, res = response) => {
+
+    const id = req.body._id;
+    const {_id, ...user} = req.body; 
+
+    const update = await User.findByIdAndUpdate(id, user);
+
+    res.json({
+        status:true,
+        update
+    });
+}
+
 module.exports = {
     create,
     getAll,
-    get
+    get,
+    update
 }

@@ -10,5 +10,7 @@ export default {
     getUser: function (params){
         return axios.get('/api/user/get',{params : params } );
     },
-
+    updateUser: function(params){
+        return axios.post('/api/user/update',params);
+    }
 }
